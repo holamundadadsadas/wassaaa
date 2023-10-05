@@ -1,0 +1,101 @@
+use("udemy");
+db.createCollection("usuarios", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      additionalProperties: false,
+      required: ["_id", "username", "password", "email", "userType"],
+      properties: {
+        _id: { bsonType: "objectId" },
+        username: { bsonType: "string", description: "username is required" },
+        password: { bsonType: "string", description: "password is required" },
+        email: { bsonType: "string", description: "email is required" },
+        userType: {
+          bsonType: "string",
+          enum: ["estudiante", "instructor", "administrador"],
+          description: "userType is required",
+        },
+      },
+    },
+  },
+});
+db.createCollection("cursos", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      additionalProperties: false,
+      required: [
+        "_id",
+        "name",
+        "description",
+        "href",
+        "imageSrc",
+        "imageAlt",
+        "videoLinks",
+      ],
+      properties: {
+        _id: { bsonType: "objectId" }, // Mantenemos el campo _id
+        name: { bsonType: "string", description: "name is required" },
+        description: {
+          bsonType: "string",
+          description: "description is required",
+        },
+        href: { bsonType: "string", description: "href is required" },
+        imageSrc: { bsonType: "string", description: "imageSrc is required" },
+        imageAlt: { bsonType: "string", description: "imageAlt is required" },
+        videoLinks: {
+          bsonType: "array",
+          items: {
+            bsonType: "array",
+            items: [
+              {
+                bsonType: "string",
+                description: "name of the video is required",
+              },
+              {
+                bsonType: "array",
+                items: {
+                  bsonType: "object",
+                  required: ["name", "href", "Desc"],
+                  properties: {
+                    name: {
+                      bsonType: "string",
+                      description: "name is required",
+                    },
+                    href: {
+                      bsonType: "string",
+                      description: "href is required",
+                    },
+                    Desc: {
+                      bsonType: "string",
+                      description: "Desc is required",
+                    },
+                  },
+                },
+                description: "video data is required",
+              },
+            ],
+          },
+          description: "videoLinks is required",
+        },
+      },
+    },
+  },
+});
+
+use("udemy");
+db.createCollection("comentarios", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      additionalProperties: false,
+      required: ["_id", "content", "author", "videoId"],
+      properties: {
+        _id: { bsonType: "objectId" }, // Mantenemos el campo _id
+        content: { bsonType: "string", description: "content is required" },
+        author: { bsonType: "string", description: "author is required" },
+        videoId: { bsonType: "string", description: "videoId is required" },
+      },
+    },
+  },
+});
